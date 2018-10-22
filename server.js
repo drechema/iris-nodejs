@@ -27,15 +27,18 @@ app.use('/api/test', testApi);
 // ----------------------------------
 
 function onSignal() {
-    console.log('\nserver is starting cleanup');
-    return Promise.all([
-        // close the database connection
-        db.close()
-    ]);
+    console.log('\nServer is starting cleanup...');
+    // close the database connection
+    var result=db.close();
+    if (result){
+        console.log('IRIS connection closed!')
+    } else {
+        console.log(result)
+    }
 }
 
 function onShutdown() {
-    console.log('cleanup finished, server is shutting down');
+    console.log('Server is shutting down');
 }
 
 async function onHealthCheck() {
