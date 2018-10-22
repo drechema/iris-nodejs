@@ -4,17 +4,29 @@ const db = require('../db/database.js');
 
 // GET /test
 router.get('/', function (req, res) {
-    res.status(200).send('OK');
+    let node = {
+        global: 'test',
+        subscripts: [1]
+    };
+    db.retrieve(node, 'object', (error, result) => {
+        if (error) {
+            res.status(500).send(result);
+        } else {
+            res.status(200).send(result.object);
+        }
+    })
 });
 
 // POST /test
 router.post('/', function (req, res) {
-    let node = {
-        global: 'test',
-        subscripts: [1],
-        data: req.body
+    let data = {
+        node: {
+            global: 'test',
+            subscripts: [1]
+        },
+        object: req.body
     };
-    db.set(node, (error, result) => {
+    db.update(data, 'object', (error, result) => {
         if (error) {
             res.status(500).send();
         } else {
