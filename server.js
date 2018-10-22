@@ -1,24 +1,24 @@
-// External modules
-const http = require('http');
-const express = require('express');
-const cors = require('cors');
-const bodyParser = require('body-parser');
+// ----------------------------------
+// Application  modules
+// ----------------------------------
 const db = require('./db/database.js');
-const { createTerminus } = require('@godaddy/terminus');
-
-// Modules of this app
 const testApi = require('./routes/test.js');
 
 // ----------------------------------
 // Create the Express app
 // ----------------------------------
 
+const express = require('express');
 const app = express();
+
+const cors = require('cors');
 var corsOptions = {
     origin: 'http://example.com',
     optionsSuccessStatus: 200
 };
 app.use(cors(corsOptions));
+
+const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use('/api/test', testApi);
 
@@ -64,17 +64,16 @@ const terminusOptions = {
 // Create HTTP Server
 // ----------------------------------
 
+const http = require('http');
 const server = http.createServer(app);
+
+const { createTerminus } = require('@godaddy/terminus');
 createTerminus(server, terminusOptions);
 
-server.listen(8000, () => {
-    db.open({
-        ip_address: '127.0.0.1',
-        tcp_port: 51773,
-        username: 'superuser',
-        password: '1234',
-        namespace: 'USER'
-    }, (error, result) => {
+const config = require('./config/config.js');
+
+server.listen(config.expressConfig.port, () => {
+    db.open(config.irisConfig, (error, result) => {
         if (error) {
             console.log(result);
         } else {
