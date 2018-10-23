@@ -20,12 +20,12 @@ DELETE /api/test/:id| Delete object with the specified id
 
 In general the API returns:
 
-|CODE | Description |
---- | --- | ---
-|200 | Updated OK|
-|201 | Created OK|
-|404 | Object with specified id not found|
-|500 | Error in server|
+CODE | Description
+---- | -----------
+200 | Updated OK
+201 | Created OK
+404 | Object with specified id not found
+500 | Error in server
 
 ## How to run
 
