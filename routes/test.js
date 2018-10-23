@@ -18,7 +18,6 @@ function getNode(id) {
 // Retrieve entity from global
 function retrieveEntityAt(id) {
     result = db.retrieve(getNode(id), 'object');
-    result.object.id = id;
     return result.object;
 }
 
@@ -47,8 +46,9 @@ router.get('/', function (req, res) {
             res.status(500).send(result);
         } else {
             var entities = new Array();
-            result.forEach(element => {
-                let entity = retrieveEntityAt(element);
+            result.forEach(id => {
+                let entity = retrieveEntityAt(id);
+                entity.id = id;
                 entities.push(entity);
             });
             res.status(200).send(entities);
@@ -57,6 +57,7 @@ router.get('/', function (req, res) {
 });
 
 // POST /test
+// Save new object
 router.post('/', function (req, res) {
     // get new id
     var counter = db.increment(getNode());
@@ -73,9 +74,32 @@ router.post('/', function (req, res) {
         if (error) {
             res.status(500).send();
         } else {
-            res.status(201).send();
+            req.body.id = counter.data;
+            res.status(201).send(req.body);
         }
     });
+});
+
+// POST /test/:id
+// Save existing object
+router.post('/:id', function (req, res) {
+    // check if that id exists
+    entity = retrieveEntityAt(req.params.id);
+    if (util.isEmptyObject(entity)) {
+        res.status(404).send();
+    }
+    // update object with id
+    let data = {
+        node: getNode(req.params.id),
+        object: req.body
+    };
+    db.update(data, 'object', (error, result) => {
+        if (error) {
+            res.status(500).send();
+        } else {
+            res.status(200).send();
+        }
+    });    
 });
 
 module.exports = router;
