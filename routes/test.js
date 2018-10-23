@@ -102,4 +102,22 @@ router.post('/:id', function (req, res) {
     });    
 });
 
+// DELETE /test/:id
+// Delete existing object
+router.delete('/:id', function (req, res) {
+    // check if that id exists
+    entity = retrieveEntityAt(req.params.id);
+    if (util.isEmptyObject(entity)) {
+        res.status(404).send();
+    }
+    // delete object with id
+    db.kill(getNode(req.params.id), (error, result) => {
+        if (error) {
+            res.status(500).send();
+        } else {
+            res.status(200).send();
+        }
+    });    
+});
+
 module.exports = router;
