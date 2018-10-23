@@ -10,13 +10,13 @@ By default the server start at port 8000 and the base URL will be
 
 You can test:
 
-|URL | Description |
---- | --- | ---
-|GET /api/test/:id | Retrive object with the specified id|
-|GET /api/test| Retrieve all the existing objects|
-|POST /api/test| Create a new object|
-|POST /api/test/:id | Update object with the specified id |
-|DELETE /api/test/:id| Delete object with the specified id |
+URL | Description 
+--- | -----------
+GET /api/test/:id | Retrive object with the specified id
+GET /api/test| Retrieve all the existing objects
+POST /api/test| Create a new object
+POST /api/test/:id | Update object with the specified id
+DELETE /api/test/:id| Delete object with the specified id
 
 In general the API returns:
 
@@ -33,8 +33,8 @@ In general the API returns:
 In my case I used **node version v8.6.0** so I needed `iris800.node`. Remenber to rename the file to `iris.node`. After that you can do:
 
 ```bash
-$ npm install
-$ npm start
+$npm install
+$npm start
 ```
 
 ## How to test
@@ -54,21 +54,25 @@ $curl -d '{"key1":"value1", "key2":"value2"}' -H "Content-Type: application/json
 ```
 
 Update existing object
+
 ```bash
 $curl -d '{"key1":"abc", "key2":"abc"}' -H "Content-Type: application/json" -X POST http://localhost:8000/api/test/1
 ```
 
 Retrieve all objects
+
 ```bash
 $curl http://localhost:8000/api/test
 ```
 
 Retrieve existing object
+
 ```bash
 $curl http://localhost:8000/api/test/1
 ```
 
 Delete existing object
+
 ```bash
 $curl -X DELETE http://localhost:8000/api/test/1
 ```
