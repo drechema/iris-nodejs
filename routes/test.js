@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../db/database.js');
+const util = require('../core/utils.js');
 
+// Build the node for the right Global
 function getNode(id) {
     let node = {
         global: 'test'
@@ -12,6 +14,30 @@ function getNode(id) {
     };
     return node;
 }
+
+// Retrieve entity from global
+function retrieveEntityAt(id) {
+    result = db.retrieve(getNode(id), 'object');
+    result.object.id = id;
+    return result.object;
+}
+
+// GET /test/:id
+// Get object by id
+router.get('/:id', function(req, res) {
+    db.retrieve(getNode(req.params.id),'object', (error, result) => {
+        if (error) {
+            res.status(500).send(result);
+        } else {
+            if (util.isEmptyObject(result.object)) {
+                res.status(404).send();
+            } else {
+                result.object.id = req.params.id;
+                res.status(200).send(result.object);
+            }
+        }
+    })
+})
 
 // GET /test
 // Get all the entities in 'test' global
@@ -30,13 +56,6 @@ router.get('/', function (req, res) {
     })
 });
 
-// Retrieve on entity from global
-function retrieveEntityAt(id) {
-    result = db.retrieve(getNode(id), 'object');
-    result.object.id = id;
-    return result.object;
-}
-
 // POST /test
 router.post('/', function (req, res) {
     // get new id
@@ -50,7 +69,6 @@ router.post('/', function (req, res) {
         node: getNode(counter.data),
         object: req.body
     };
-    console.log(data);
     db.update(data, 'object', (error, result) => {
         if (error) {
             res.status(500).send();
