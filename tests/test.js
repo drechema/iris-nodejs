@@ -1,5 +1,5 @@
 // first, load the IRIS connector module inside node_modules
-const irisModule = require('iris');
+const irisModule = require('iris/iris');
 
 // instantiate a IRIS connector object in JavaScript
 var db = new irisModule.IRIS();
