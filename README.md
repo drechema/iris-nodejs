@@ -10,7 +10,7 @@ By default the server start at port 8000 and the base URL will be
 
 You can test:
 
-URL | Description 
+URL | Description
 --- | -----------
 GET /api/test/:id | Retrive object with the specified id
 GET /api/test| Retrieve all the existing objects
